@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+今日打卡时间：<p id="checkInDate"></p>
+<p id="checkInTime"></p>
+
+</body>
+
+<script type="text/javascript">
+    updateCheckInDateTime();
+    showCheckInDateTime();
+
+    function getCookie(key){
+        var cookies = document.cookie.split("; ");
+        for(var x in cookies){
+            var ky = cookies[x].split("=");
+            if(key === ky[0]){
+                return decodeURI(ky[1]);
+            }
+        }
+    }
+
+    //获取今日
+    function getNewDate() {
+        var dt = new Date();
+        return dt.getFullYear()+'-'+(dt.getMonth()+1)+'-'+dt.getDate()
+    }
+
+    //获取现在时间
+    function getNewTime() {
+        var dt = new Date();
+        return dt.getHours()+':'+dt.getMinutes()+':'+dt.getSeconds()
+    }
+
+    function setCheckInDateTime(date,time){
+        var dt = new Date() ;//日期对象
+        dt.setDate(dt.getDate()+100); //设置100天后的时间
+
+        document.cookie = "checkInDate="+date+";expires="+dt;
+        document.cookie = "checkInTime="+time+";expires="+dt;
+    }
+    function showCheckInDateTime(){
+        var checkInDate = document.getElementById("checkInDate"); //对象
+        var checkInTime = document.getElementById("checkInTime"); //对象
+        checkInDate.innerText=getCookie('checkInDate');
+        checkInTime.innerText=getCookie('checkInTime');
+    }
+
+    function updateCheckInDateTime() {
+        var oldCheckInDate = getCookie('checkInDate');
+        var oldCheckInTime = getCookie('checkInTime');
+        var newCheckInDate = getNewDate();
+        var newCheckInTime = getNewTime();
+        if (newCheckInDate !== oldCheckInDate) {
+            setCheckInDateTime(newCheckInDate,newCheckInTime)
+        }
+    }
+
+</script>
+</html>
