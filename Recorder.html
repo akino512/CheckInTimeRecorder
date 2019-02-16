@@ -11,51 +11,45 @@
 </body>
 
 <script type="text/javascript">
+    let storage = window.localStorage;
+
     updateCheckInDateTime();
     showCheckInDateTime();
 
-    function getCookie(key){
-        var cookies = document.cookie.split("; ");
-        for(var x in cookies){
-            var ky = cookies[x].split("=");
-            if(key === ky[0]){
-                return decodeURI(ky[1]);
-            }
-        }
-    }
 
     //获取今日
     function getNewDate() {
-        var dt = new Date();
+        let dt = new Date();
         return dt.getFullYear()+'-'+(dt.getMonth()+1)+'-'+dt.getDate()
     }
 
     //获取现在时间
     function getNewTime() {
-        var dt = new Date();
+        let dt = new Date();
         return dt.getHours()+':'+dt.getMinutes()+':'+dt.getSeconds()
     }
 
     function setCheckInDateTime(date,time){
-        var dt = new Date() ;//日期对象
-        dt.setDate(dt.getDate()+100); //设置100天后的时间
-
-        document.cookie = "checkInDate="+date+";expires="+dt;
-        document.cookie = "checkInTime="+time+";expires="+dt;
+        storage.checkInDate=date;
+        storage.checkInTime=time;
     }
     function showCheckInDateTime(){
-        var checkInDate = document.getElementById("checkInDate"); //对象
-        var checkInTime = document.getElementById("checkInTime"); //对象
-        checkInDate.innerText=getCookie('checkInDate');
-        checkInTime.innerText=getCookie('checkInTime');
+        let checkInDate = document.getElementById("checkInDate"); //对象
+        let checkInTime = document.getElementById("checkInTime"); //对象
+        checkInDate.innerText=storage.checkInDate;
+        checkInTime.innerText=storage.checkInTime;
     }
 
     function updateCheckInDateTime() {
-        var oldCheckInDate = getCookie('checkInDate');
-        var oldCheckInTime = getCookie('checkInTime');
-        var newCheckInDate = getNewDate();
-        var newCheckInTime = getNewTime();
+        let oldCheckInDate = storage.checkInDate;
+        // let oldCheckInTime = storage.checkInTime;
+        let newCheckInDate = getNewDate();
+        let newCheckInTime = getNewTime();
+
+        console.log(oldCheckInDate);
+        console.log(newCheckInDate);
         if (newCheckInDate !== oldCheckInDate) {
+            alert("new");
             setCheckInDateTime(newCheckInDate,newCheckInTime)
         }
     }
